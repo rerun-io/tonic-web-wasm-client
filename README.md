@@ -1,11 +1,21 @@
 # tonic-web-wasm-client
 
 > [!IMPORTANT]
-> This is a temporary Rerun fork that includes https://github.com/devashishdxt/tonic-web-wasm-client/pull/90.
+> This is a temporary Rerun fork, published as [`rerun-tonic-web-wasm-client`](https://crates.io/crates/rerun-tonic-web-wasm-client).
 > The real repository is [`devashishdxt/tonic-web-wasm-client`](https://github.com/devashishdxt/tonic-web-wasm-client).
 
 Rust implementation of [`grpc-web`](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md) protocol that allows
 using [`tonic`](https://crates.io/crates/tonic) in browsers via webassembly.
+
+## How this fork differs from upstream
+
+This fork stays on the upstream **0.8** release line and backports fixes needed by Rerun's web viewer.
+As noted in [Rerun's `Cargo.toml`](https://github.com/rerun-io/rerun/blob/main/Cargo.toml#L515), upstream 0.9 pulls in `wasm-streams` 0.5, which would duplicate the 0.4 dependency used by `reqwest` 0.12. Staying on 0.8 avoids that duplication; upgrading can be revisited when Rerun moves to `reqwest` 0.13.
+
+The fork includes these backports:
+
+- **0.8.1:** [upstream PR #90](https://github.com/devashishdxt/tonic-web-wasm-client/pull/90) — forward parsed response trailers to tonic instead of ending the body without them.
+- **0.8.2:** [upstream PR #112](https://github.com/devashishdxt/tonic-web-wasm-client/pull/112) — keep reading when a trailers frame is split across fetch chunks, rather than ending the body prematurely. This fixes the spurious `missing grpc-status trailer` error reported in [Rerun issue #12979](https://github.com/rerun-io/rerun/issues/12979). The backport includes regression tests for split, truncated, and malformed trailers.
 
 ## Usage
 
@@ -13,7 +23,7 @@ To use `tonic-web-wasm-client`, you need to add the following to your `Cargo.tom
 
 ```toml
 [dependencies]
-tonic-web-wasm-client = "0.8"
+tonic-web-wasm-client = { version = "0.8", package = "rerun-tonic-web-wasm-client" }
 ```
 
 ### Example

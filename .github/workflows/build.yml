@@ -2,11 +2,24 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, patch-0.8.1 ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, patch-0.8.1 ]
 
 jobs:
+  unit-tests:
+    name: Native Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+      - name: Run unit tests
+        run: cargo test
   build:
     name: Build
     runs-on: ubuntu-latest
