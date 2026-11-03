@@ -16,6 +16,7 @@ The fork includes these backports:
 
 - **0.8.1:** [upstream PR #90](https://github.com/devashishdxt/tonic-web-wasm-client/pull/90) — forward parsed response trailers to tonic instead of ending the body without them.
 - **0.8.2:** [upstream PR #112](https://github.com/devashishdxt/tonic-web-wasm-client/pull/112) — keep reading when a trailers frame is split across fetch chunks, rather than ending the body prematurely. This fixes the spurious `missing grpc-status trailer` error reported in [Rerun issue #12979](https://github.com/rerun-io/rerun/issues/12979). The backport includes regression tests for split, truncated, and malformed trailers.
+- **0.8.3:** support `wasm-streams` 0.4 through 0.7 ([#2](https://github.com/rerun-io/tonic-web-wasm-client/pull/2)).
 
 ## Usage
 
